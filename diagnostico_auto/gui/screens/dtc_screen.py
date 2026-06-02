@@ -19,6 +19,7 @@ from kivymd.uix.dialog import MDDialog
 from gui.theme import Color, Dim, Fuente
 from gui.controller import controlador
 from gui.components.cards import TarjetaDTC
+from diagnostics.manual_service import servicio_manual
 
 
 class PantallaDTCs(MDScreen):
@@ -162,12 +163,21 @@ class PantallaDTCs(MDScreen):
             self._lista.add_widget(cab)
 
             for dtc in dtcs:
+                codigo = dtc.get("codigo", "?")
                 tarjeta = TarjetaDTC(
-                    codigo=dtc.get("codigo", "?"),
+                    codigo=codigo,
                     descripcion=dtc.get("desc", ""),
                     severidad=dtc.get("severidad", "media"),
                     activo=dtc.get("activo", True))
                 self._lista.add_widget(tarjeta)
+
+                if servicio_manual.tiene_procedimiento(codigo):
+                    btn_proc = MDFlatButton(
+                        text=f"  Ver procedimiento para {codigo}  →",
+                        theme_text_color="Custom", text_color=Color.PRIMARIO,
+                        font_size=Fuente.ETIQUETA, size_hint_y=None, height=dp(32))
+                    btn_proc.bind(on_release=lambda *_, c=codigo: self._ir_a_procedimiento(c))
+                    self._lista.add_widget(btn_proc)
 
     def _mostrar_sin_fallos(self):
         cont = MDBoxLayout(orientation="vertical", size_hint_y=None,
@@ -211,6 +221,13 @@ class PantallaDTCs(MDScreen):
         self._btn_borrar.disabled = True
         # En un caso real llamaría a controlador para borrar; aquí refrescamos
         Clock.schedule_once(lambda dt: self._post_borrado(), 1.0)
+
+    def _ir_a_procedimiento(self, codigo_dtc: str):
+        from kivymd.app import MDApp
+        app = MDApp.get_running_app()
+        sm = app.root
+        pantalla_principal = sm.get_screen("principal")
+        pantalla_principal.ir_a_procedimiento_dtc(codigo_dtc)
 
     def _post_borrado(self):
         self._btn_borrar.text = "BORRAR"

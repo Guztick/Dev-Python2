@@ -1,0 +1,225 @@
+{
+  "version": "1.0",
+  "vehiculo": "Renault Duster",
+  "nota": "Valores de referencia para diagnóstico con datos en vivo. El vehículo debe estar a temperatura de operación normal (85-95°C) salvo que se indique lo contrario.",
+  "grupos": {
+
+    "motor_gasolina_h4m": {
+      "nombre": "Motor H4M 1.6 SCe — Gasolina",
+      "pids": [
+        {
+          "nombre": "RPM motor",
+          "pid": "0x0C",
+          "unidad": "rpm",
+          "ralenti": {"min": 680, "max": 780, "nota": "Con A/C encendido: +100–150 rpm"},
+          "a_2500": {"min": 2450, "max": 2550, "nota": "Estable, sin oscilaciones"},
+          "comentario": "RPM inestable en ralentí indica fallo de encendido, fuga de vacío o sensor MAF."
+        },
+        {
+          "nombre": "Temperatura de refrigerante",
+          "pid": "0x05",
+          "unidad": "°C",
+          "ralenti": {"min": 82, "max": 98, "nota": "Rango de operación normal"},
+          "a_2500": {"min": 82, "max": 98, "nota": "No debe subir al acelerar"},
+          "comentario": "< 70°C en caliente = termostato pegado abierto. > 105°C = fallo de refrigeración."
+        },
+        {
+          "nombre": "Carga calculada del motor",
+          "pid": "0x04",
+          "unidad": "%",
+          "ralenti": {"min": 15, "max": 30, "nota": "Varía con A/C y carga eléctrica"},
+          "a_2500": {"min": 35, "max": 55, "nota": "Sin carga (marcha sin transmisión)"},
+          "comentario": "Carga > 80% en ralentí indica fuga severa o motor con problemas internos."
+        },
+        {
+          "nombre": "Caudal MAF",
+          "pid": "0x10",
+          "unidad": "g/s",
+          "ralenti": {"min": 2.5, "max": 5.0, "nota": "Motor caliente"},
+          "a_2500": {"min": 10.0, "max": 18.0, "nota": "Sin carga"},
+          "comentario": "< 2 g/s en ralentí = MAF sucio/muerto. > 8 g/s en ralentí = fuga de aire aguas abajo del MAF."
+        },
+        {
+          "nombre": "Posición mariposa (TPS)",
+          "pid": "0x11",
+          "unidad": "%",
+          "ralenti": {"min": 0, "max": 5, "nota": "Pedal sin pisar"},
+          "a_2500": {"min": 15, "max": 30, "nota": "Aceleración parcial"},
+          "comentario": "Sin linealidad en la señal indica adaptación TPS necesaria o mariposa defectuosa."
+        },
+        {
+          "nombre": "Voltaje de sonda Lambda aguas arriba",
+          "pid": "0x14",
+          "unidad": "V",
+          "ralenti": {"min": 0.1, "max": 0.9, "nota": "OSCILANTE — cicla entre min y max"},
+          "a_2500": {"min": 0.7, "max": 0.9, "nota": "Aceleración (mezcla rica momentánea)"},
+          "comentario": "Señal fija en 0.45 V = sonda muerta. No oscila = calefactor defectuoso o catalizador."
+        },
+        {
+          "nombre": "Corrección combustible a corto plazo (STFT)",
+          "pid": "0x06",
+          "unidad": "%",
+          "ralenti": {"min": -5, "max": 5, "nota": "Normal"},
+          "a_2500": {"min": -5, "max": 5, "nota": "Normal"},
+          "comentario": "STFT > +10% indica mezcla pobre (MAF bajo, fuga vacío). STFT < -10% = mezcla rica."
+        },
+        {
+          "nombre": "Corrección combustible a largo plazo (LTFT)",
+          "pid": "0x07",
+          "unidad": "%",
+          "ralenti": {"min": -10, "max": 10, "nota": "Normal"},
+          "a_2500": {"min": -10, "max": 10, "nota": "Normal"},
+          "comentario": "LTFT > +15% crónico indica problema real de mezcla (no solo transitorio)."
+        },
+        {
+          "nombre": "Avance de encendido",
+          "pid": "0x0E",
+          "unidad": "° APMS",
+          "ralenti": {"min": 8, "max": 18, "nota": "Variable según carga y temperatura"},
+          "a_2500": {"min": 20, "max": 35, "nota": "Sin carga"},
+          "comentario": "Avance muy reducido (< 5°) indica detonación detectada por sensor de picado."
+        },
+        {
+          "nombre": "Velocidad del vehículo",
+          "pid": "0x0D",
+          "unidad": "km/h",
+          "ralenti": {"min": 0, "max": 0, "nota": "Parado"},
+          "a_2500": {"min": null, "max": null, "nota": "Variable"},
+          "comentario": "Debe coincidir exactamente con el velocímetro del tablero."
+        },
+        {
+          "nombre": "Voltaje de la batería (OBD modo 01)",
+          "pid": "0x42",
+          "unidad": "V",
+          "ralenti": {"min": 13.8, "max": 14.5, "nota": "Motor en marcha — alternador cargando"},
+          "a_2500": {"min": 13.8, "max": 14.5, "nota": "Similar al ralentí"},
+          "comentario": "< 12.5 V con motor en marcha = alternador defectuoso. > 15 V = regulador defectuoso."
+        }
+      ]
+    },
+
+    "motor_diesel_k9k": {
+      "nombre": "Motor K9K 1.5 dCi — Diésel",
+      "pids": [
+        {
+          "nombre": "RPM motor",
+          "pid": "0x0C",
+          "unidad": "rpm",
+          "ralenti": {"min": 720, "max": 820, "nota": "Motor caliente"},
+          "a_2500": {"min": 2450, "max": 2550, "nota": "Sin carga"},
+          "comentario": "Ralentí inestable en diésel: inyectores desgastados o IMV defectuoso."
+        },
+        {
+          "nombre": "Temperatura de refrigerante",
+          "pid": "0x05",
+          "unidad": "°C",
+          "ralenti": {"min": 85, "max": 98, "nota": "Normal"},
+          "a_2500": {"min": 85, "max": 98, "nota": "No debe subir significativamente"},
+          "comentario": "> 105°C = fallo bomba agua o termostato. K9K es sensible al sobrecalentamiento."
+        },
+        {
+          "nombre": "Presión del riel de combustible",
+          "pid": "0x23",
+          "unidad": "bar",
+          "ralenti": {"min": 250, "max": 400, "nota": "Motor caliente"},
+          "a_2500": {"min": 800, "max": 1200, "nota": "Aceleración parcial"},
+          "comentario": "Presión < 200 bar en ralentí = bomba HP desgastada, IMV defectuoso, o inyector con fuga."
+        },
+        {
+          "nombre": "Diferencia presión real vs objetivo",
+          "pid": "Renault DID 0x1002",
+          "unidad": "bar",
+          "ralenti": {"min": 0, "max": 30, "nota": "Normal"},
+          "a_2500": {"min": 0, "max": 50, "nota": "Normal bajo carga"},
+          "comentario": "Diferencia > 100 bar constante = problema de regulación. Inspeccionar IMV, bomba y retorno inyectores."
+        },
+        {
+          "nombre": "Temperatura del aire de admisión",
+          "pid": "0x0F",
+          "unidad": "°C",
+          "ralenti": {"min": 20, "max": 50, "nota": "Temperatura ambiente + efecto turbo"},
+          "a_2500": {"min": 25, "max": 60, "nota": "Con intercooler funcionando"},
+          "comentario": "> 70°C de admisión reduce potencia notablemente. Revisar intercooler (sucio o doblado)."
+        },
+        {
+          "nombre": "Presión del turbo (MAP)",
+          "pid": "0x0B",
+          "unidad": "kPa",
+          "ralenti": {"min": 90, "max": 105, "nota": "Prácticamente presión atmosférica"},
+          "a_2500": {"min": 170, "max": 220, "nota": "Sobrealimentación activa"},
+          "comentario": "Turbo que no supera 120 kPa en carga indica paletas VGT pegadas o fuga en intercooler."
+        },
+        {
+          "nombre": "Posición de la mariposa EGR",
+          "pid": "Renault DID",
+          "unidad": "%",
+          "ralenti": {"min": 0, "max": 5, "nota": "Cerrada en ralentí caliente"},
+          "a_2500": {"min": 0, "max": 0, "nota": "Cerrada a plena carga siempre"},
+          "comentario": "EGR > 10% en plena carga indica fallo en el actuador (se queda abierta)."
+        },
+        {
+          "nombre": "Carga calculada del motor",
+          "pid": "0x04",
+          "unidad": "%",
+          "ralenti": {"min": 10, "max": 25, "nota": "Normal"},
+          "a_2500": {"min": 35, "max": 55, "nota": "Sin carga externa"},
+          "comentario": "La carga elevada en ralentí puede indicar fricción interna alta (aceite demasiado viscoso en frío)."
+        }
+      ]
+    },
+
+    "bateria_carga": {
+      "nombre": "Batería y sistema de carga",
+      "pids": [
+        {
+          "nombre": "Voltaje batería (motor parado)",
+          "pid": "0x42",
+          "unidad": "V",
+          "ralenti": {"min": 12.4, "max": 12.8, "nota": "Batería sana sin carga"},
+          "comentario": "< 12.0 V con motor parado = batería descargada o defectuosa."
+        },
+        {
+          "nombre": "Voltaje batería (motor en marcha)",
+          "pid": "0x42",
+          "unidad": "V",
+          "ralenti": {"min": 13.8, "max": 14.5, "nota": "Alternador cargando normalmente"},
+          "comentario": "La diferencia entre parado y en marcha debe ser > 1.3 V. Si es < 0.5 V, el alternador no carga."
+        }
+      ]
+    },
+
+    "abs_esp": {
+      "nombre": "ABS / ESP — Velocidades de rueda",
+      "pids": [
+        {
+          "nombre": "Velocidad rueda delantera izquierda",
+          "pid": "ABS DID",
+          "unidad": "km/h",
+          "ralenti": {"min": 0, "max": 0, "nota": "Parado = 0"},
+          "comentario": "Debe coincidir exactamente con las otras 3 ruedas al rodar en línea recta."
+        },
+        {
+          "nombre": "Velocidad rueda delantera derecha",
+          "pid": "ABS DID",
+          "unidad": "km/h",
+          "ralenti": {"min": 0, "max": 0, "nota": "Parado = 0"},
+          "comentario": "Diferencia > 2 km/h respecto a las demás a velocidad constante = sensor defectuoso o corona fónica."
+        },
+        {
+          "nombre": "Velocidad rueda trasera izquierda",
+          "pid": "ABS DID",
+          "unidad": "km/h",
+          "ralenti": {"min": 0, "max": 0, "nota": "Parado = 0"},
+          "comentario": "Si una rueda trasera muestra 0 km/h mientras las demás indican la velocidad real, sensor cortado."
+        },
+        {
+          "nombre": "Velocidad rueda trasera derecha",
+          "pid": "ABS DID",
+          "unidad": "km/h",
+          "ralenti": {"min": 0, "max": 0, "nota": "Parado = 0"},
+          "comentario": "Los sensores traseros son más propensos a fallar por exposición a barro (Duster 4x4)."
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,407 @@
+{
+  "version": "1.0",
+  "vehiculo": "Renault Duster",
+  "sistemas": {
+
+    "motor_h4m": {
+      "nombre": "Motor H4M 1.6 SCe 110 CV",
+      "descripcion": "Motor naftero de 4 cilindros en línea 16 válvulas con gestión Bosch ME17.9.x. Ciclo Otto, DOHC, cadena de distribución (sin correa). Sin turbocompresor.",
+      "icono": "engine",
+      "componentes": [
+        {
+          "id": "uce_pcm",
+          "nombre": "UCE (Unidad de Control Motor)",
+          "ubicacion": "Caja fusibles compartimento motor, lado izquierdo",
+          "descripcion": "Bosch ME17.9.x. Gestiona inyección, encendido, EGR (en versiones Euro 5), y comunica por CAN.",
+          "par_apriete": null,
+          "herramienta_especial": null
+        },
+        {
+          "id": "maf",
+          "nombre": "Sensor MAF (Caudalímetro)",
+          "ubicacion": "Conducto de admisión, entre caja filtro y mariposa electrónica",
+          "descripcion": "Tipo hilo caliente. Mide la masa de aire entrante para calcular la cantidad de combustible. Crítico para la mezcla.",
+          "par_apriete": "2 N·m (2 tornillos M5)",
+          "herramienta_especial": null
+        },
+        {
+          "id": "mariposa",
+          "nombre": "Cuerpo de mariposa electrónico",
+          "ubicacion": "Colector de admisión, lado derecho motor",
+          "descripcion": "Mariposa controlada por motor eléctrico (ETC). Sin cable mecánico. Incluye sensor TPS doble integrado.",
+          "par_apriete": "10 N·m (4 tornillos M6)",
+          "herramienta_especial": null
+        },
+        {
+          "id": "colector_admision",
+          "nombre": "Colector de admisión",
+          "ubicacion": "Parte superior del motor, sobre culata",
+          "descripcion": "Plástico. Distribuye el aire a los 4 cilindros. Incluye la cámara de vacío para el servofreno.",
+          "par_apriete": "22 N·m (tornillos M8)",
+          "herramienta_especial": null
+        },
+        {
+          "id": "bujias",
+          "nombre": "Bujías de encendido (x4)",
+          "ubicacion": "Tapa de culata, acceso directo tras quitar las bobinas",
+          "descripcion": "Tipo NGK o Champion, rosca M14. Gap: 0.9–1.1 mm. Intervalo de cambio: 30 000 km o 2 años.",
+          "par_apriete": "25 N·m",
+          "herramienta_especial": "Llave de bujías 16mm con prolongador flexible"
+        },
+        {
+          "id": "bobinas_cop",
+          "nombre": "Bobinas de encendido COP (x4)",
+          "ubicacion": "Directamente sobre cada bujía, tapa de culata",
+          "descripcion": "Bobina de tipo 'lápiz' (COP: Coil On Plug). Una por cilindro. Controladas individualmente por la UCE.",
+          "par_apriete": "6 N·m (tornillo M6 cada bobina)",
+          "herramienta_especial": null
+        },
+        {
+          "id": "inyectores",
+          "nombre": "Inyectores (x4)",
+          "ubicacion": "Riel de inyección, lateral derecho de la culata",
+          "descripcion": "Inyección indirecta multipunto (MPI). Resistencia bobina: 12–16 Ω. Caudal nominal: ~200 cc/min.",
+          "par_apriete": "20 N·m (abrazadera)",
+          "herramienta_especial": null
+        },
+        {
+          "id": "sensor_lambda_up",
+          "nombre": "Sonda Lambda aguas arriba",
+          "ubicacion": "Colector de escape, antes del catalizador (1er tramo)",
+          "descripcion": "Tipo banda ancha (wideband) o switching. Señal 0.1–0.9 V oscilante. Controla la mezcla estequiométrica.",
+          "par_apriete": "45 N·m (rosca M18x1.5)",
+          "herramienta_especial": "Llave sonda lambda 22mm"
+        },
+        {
+          "id": "sensor_lambda_down",
+          "nombre": "Sonda Lambda aguas abajo",
+          "ubicacion": "Salida del catalizador convertidor",
+          "descripcion": "Tipo switching (narrowband). Monitorea la eficiencia del catalizador comparando con la sonda aguas arriba.",
+          "par_apriete": "45 N·m",
+          "herramienta_especial": "Llave sonda lambda 22mm"
+        },
+        {
+          "id": "sensor_map",
+          "nombre": "Sensor MAP (Presión colector)",
+          "ubicacion": "Colector de admisión",
+          "descripcion": "Mide la presión absoluta del colector. Respaldo del MAF en caso de fallo. Señal 1–4.5 V.",
+          "par_apriete": "5 N·m",
+          "herramienta_especial": null
+        },
+        {
+          "id": "sensor_temp_refrigerante",
+          "nombre": "Sensor de temperatura de refrigerante (ECT)",
+          "ubicacion": "Culata, salida de agua lado izquierdo del motor",
+          "descripcion": "Termistor NTC. Resistencia: ~2400 Ω a 20°C, ~185 Ω a 80°C. Crítico para enriquecimiento en frío.",
+          "par_apriete": "20 N·m (rosca M12)",
+          "herramienta_especial": null
+        },
+        {
+          "id": "sensor_arbol_levas",
+          "nombre": "Sensor árbol de levas (CMP)",
+          "ubicacion": "Carcasa delantera del motor, lado admisión",
+          "descripcion": "Tipo Hall. Detecta la posición del árbol de levas para sincronización de la inyección secuencial.",
+          "par_apriete": "8 N·m",
+          "herramienta_especial": null
+        },
+        {
+          "id": "sensor_ciguenal",
+          "nombre": "Sensor de cigüeñal (CKP)",
+          "ubicacion": "Bloque motor, lado derecho inferior",
+          "descripcion": "Tipo reluctancia variable. Lee la corona fónica de 60-2 dientes del cigüeñal. Resistencia: 800–900 Ω (frío).",
+          "par_apriete": "8 N·m",
+          "herramienta_especial": null
+        }
+      ],
+      "especificaciones": {
+        "cilindrada": "1598 cc",
+        "compresion": "11.0:1",
+        "par_maximo": "156 N·m a 4000 rpm",
+        "potencia": "81 kW (110 CV) a 5500 rpm",
+        "par_culata": "60 N·m + 90° + 90°",
+        "par_bielas": "25 N·m + 45°",
+        "aceite": "5W-40 o 5W-30 (API SN)",
+        "capacidad_aceite": "4.5 L con filtro",
+        "intervalo_aceite": "10 000 km o 1 año",
+        "distribucion": "Cadena (sin mantenimiento programado)",
+        "bujias_gap": "0.9 – 1.1 mm"
+      }
+    },
+
+    "motor_k9k": {
+      "nombre": "Motor K9K 1.5 dCi 90/110 CV",
+      "descripcion": "Motor diésel de 4 cilindros, 8 válvulas (SOHC), inyección common rail con turbocompresor de geometría variable (VGT). Gestion Bosch EDC17C11 o Delphi DCM3.4.",
+      "icono": "engine",
+      "componentes": [
+        {
+          "id": "uce_edc",
+          "nombre": "UCE/EDC (Unidad de Control Motor Diésel)",
+          "ubicacion": "Compartimento motor, caja fusibles lateral",
+          "descripcion": "Bosch EDC17C11 o Delphi DCM3.4 según versión. Gestiona inyección, turbo VGT, EGR, postcalentamiento.",
+          "par_apriete": null,
+          "herramienta_especial": null
+        },
+        {
+          "id": "bomba_hp",
+          "nombre": "Bomba de alta presión (HP)",
+          "ubicacion": "Bloque motor lado izquierdo, accionada por árbol de levas (lóbulo especial)",
+          "descripcion": "Bosch CP1 o CP3. Genera presión de 250–1800 bar para el common rail. Tiene regulador IMV integrado.",
+          "par_apriete": "25 N·m (3 tornillos M8) + punta de eje 50 N·m",
+          "herramienta_especial": "Llave bloqueo bomba HP"
+        },
+        {
+          "id": "imv",
+          "nombre": "Regulador IMV (Inlet Metering Valve)",
+          "ubicacion": "Cuerpo de la bomba alta presión",
+          "descripcion": "Controla el caudal de entrada de la bomba HP. Resistencia: 5–6 Ω. Fallo causa baja presión en carga.",
+          "par_apriete": "35 N·m",
+          "herramienta_especial": null
+        },
+        {
+          "id": "riel_common_rail",
+          "nombre": "Riel common rail",
+          "ubicacion": "Culata, longitudinal sobre los inyectores",
+          "descripcion": "Acumulador de combustible a alta presión. Incluye sensor de presión y válvula limitadora de presión (3ª generación).",
+          "par_apriete": "22 N·m (abrazaderas)",
+          "herramienta_especial": null
+        },
+        {
+          "id": "inyectores_diesel",
+          "nombre": "Inyectores common rail (x4)",
+          "ubicacion": "Culata, sobre cada cámara de combustión",
+          "descripcion": "Tipo solenoide (Bosch) o piezo (Delphi). Presión apertura: 1400+ bar. Caudal retorno máx: 15 ml/30 s por inyector.",
+          "par_apriete": "30 N·m (arandela cobre nueva obligatoria)",
+          "herramienta_especial": "Extractor inyectores diésel, codificación IMA"
+        },
+        {
+          "id": "turbo_vgt",
+          "nombre": "Turbocompresor VGT",
+          "ubicacion": "Colector de escape, lado izquierdo motor",
+          "descripcion": "Turbo de geometría variable. Las paletas se controlan con actuador eléctrico o neumático. Presión nominal: 1.0–1.5 bar.",
+          "par_apriete": "25 N·m (3 tornillos M8 colector)",
+          "herramienta_especial": null
+        },
+        {
+          "id": "egr",
+          "nombre": "Válvula EGR + Enfriador EGR",
+          "ubicacion": "Colector admisión lado izquierdo; enfriador conectado al circuito de refrigeración",
+          "descripcion": "Recircula gases de escape para reducir NOx. Válvula eléctrica controlada por la UCE. El enfriador EGR puede taponarse.",
+          "par_apriete": "22 N·m (3 tornillos M8)",
+          "herramienta_especial": null
+        },
+        {
+          "id": "sensor_presion_riel",
+          "nombre": "Sensor de presión del riel",
+          "ubicacion": "Extremo delantero del riel common rail",
+          "descripcion": "Piezoeléctrico. Rango: 0–1800 bar. Señal 0.5–4.5 V. Crítico para el control de inyección.",
+          "par_apriete": "35 N·m (rosca M18)",
+          "herramienta_especial": null
+        },
+        {
+          "id": "filtro_diesel",
+          "nombre": "Filtro de combustible diésel",
+          "ubicacion": "Soporte lado derecho del motor, accesible desde arriba",
+          "descripcion": "Cartucho con purga de agua integrada. Cambio: cada 30 000 km. Incluye bomba de purga manual.",
+          "par_apriete": "25 N·m (tapón purga M16)",
+          "herramienta_especial": "Llave cartucho filtro"
+        },
+        {
+          "id": "postcalentadores",
+          "nombre": "Bujías de precalentamiento (x4)",
+          "ubicacion": "Culata, una por cilindro (mismo alojamiento que bujía en gasolina)",
+          "descripcion": "Tipo metal (400°C en 4 s). Resistencia en frío: 0.5–1.5 Ω. La UCE controla el tiempo de precalentamiento según temperatura.",
+          "par_apriete": "15 N·m",
+          "herramienta_especial": "Llave bujías 10mm hexagonal"
+        },
+        {
+          "id": "sensor_temp_admision",
+          "nombre": "Sensor temperatura aire admisión (IAT)",
+          "ubicacion": "Intercooler o conducto de admisión post-turbo",
+          "descripcion": "Termistor NTC. Monitorea la temperatura del aire tras el enfriador de carga. Afecta a la corrección de densidad del aire.",
+          "par_apriete": "5 N·m",
+          "herramienta_especial": null
+        }
+      ],
+      "especificaciones": {
+        "cilindrada": "1461 cc",
+        "compresion": "16.0:1 (90 CV) / 15.4:1 (110 CV)",
+        "par_maximo": "200 N·m a 1750 rpm (90 CV) / 240 N·m a 1750 rpm (110 CV)",
+        "potencia": "66 kW (90 CV) o 81 kW (110 CV)",
+        "par_culata": "Fase 1: 20 N·m / Fase 2: 90° / Fase 3: 90°",
+        "par_bielas": "25 N·m + 60°",
+        "aceite": "5W-40 o 0W-30 (ACEA C3/C4)",
+        "capacidad_aceite": "4.5 L con filtro",
+        "intervalo_aceite": "10 000 km o 1 año",
+        "distribucion": "Correa dentada — cambio cada 120 000 km o 8 años",
+        "correa_accesorios": "Cada 120 000 km con el kit distribución"
+      }
+    },
+
+    "frenos_abs": {
+      "nombre": "Frenos y sistema ABS/ESP",
+      "descripcion": "Frenos de disco delanteros y tambor traseros (versión base) o disco-disco (4x4 y versiones superiores). ABS con distribución electrónica de frenada (EBD) y control de estabilidad ESP.",
+      "icono": "car-brake-abs",
+      "componentes": [
+        {
+          "id": "modulo_abs",
+          "nombre": "Módulo hidráulico ABS/ESP",
+          "ubicacion": "Compartimento motor, lado izquierdo junto al depósito de frenos",
+          "descripcion": "Unidad hidráulica con bomba, acumulador y solenoides. Contiene los terminadores CAN del bus de carrocería.",
+          "par_apriete": "10 N·m (3 pernos M8 soporte)",
+          "herramienta_especial": "Escáner con función sangrado ABS"
+        },
+        {
+          "id": "sensor_abs_di",
+          "nombre": "Sensor ABS rueda delantera izquierda",
+          "ubicacion": "Mangueta delantera izquierda, sobre el buje",
+          "descripcion": "Sensor activo Hall, 2 hilos, 12 V. Lee la corona magnética multipolar integrada en el retén interior del buje.",
+          "par_apriete": "8 N·m",
+          "herramienta_especial": null
+        },
+        {
+          "id": "sensor_abs_dd",
+          "nombre": "Sensor ABS rueda delantera derecha",
+          "ubicacion": "Mangueta delantera derecha",
+          "descripcion": "Idéntico al izquierdo. Cable más corto. Sensible a impactos en la zona del paso de rueda.",
+          "par_apriete": "8 N·m",
+          "herramienta_especial": null
+        },
+        {
+          "id": "sensor_abs_ti",
+          "nombre": "Sensor ABS rueda trasera izquierda",
+          "ubicacion": "Soporte trasero izquierdo, sobre el buje trasero",
+          "descripcion": "Igual tecnología que delanteros. Cable largo (recorre el chasis). Revisar el clip de sujeción del cable.",
+          "par_apriete": "8 N·m",
+          "herramienta_especial": null
+        },
+        {
+          "id": "sensor_abs_td",
+          "nombre": "Sensor ABS rueda trasera derecha",
+          "ubicacion": "Soporte trasero derecho",
+          "descripcion": "Igual al trasero izquierdo. Los más afectados por barro y oxidación en Duster por su clearance bajo.",
+          "par_apriete": "8 N·m",
+          "herramienta_especial": null
+        },
+        {
+          "id": "discos_delanteros",
+          "nombre": "Discos de freno delanteros",
+          "ubicacion": "Ruedas delanteras, montados sobre el buje",
+          "descripcion": "Disco ventilado. Diámetro: 280 mm (tracción delantera) / 296 mm (4x4). Espesor nuevo: 25 mm. Desechar a 22 mm.",
+          "par_apriete": "Tornillos rueda: 105 N·m",
+          "herramienta_especial": "Compresor de pistón de freno (pinza de pistón simple)"
+        },
+        {
+          "id": "pastillas_delanteras",
+          "nombre": "Pastillas de freno delanteras",
+          "ubicacion": "Pinza de freno delantera",
+          "descripcion": "Espesor mínimo del material de fricción: 2 mm. Cambio habitual: 30 000–50 000 km según uso.",
+          "par_apriete": "Perno guía pinza: 30 N·m",
+          "herramienta_especial": null
+        }
+      ],
+      "especificaciones": {
+        "liquido_frenos": "DOT 4 (cambio cada 2 años o 40 000 km)",
+        "presion_pedal_duro": "80–120 bar (normal con ABS activo)",
+        "recorrido_pedal": "30–50 mm antes de morder (ajustable mecánicamente)"
+      }
+    },
+
+    "airbag_srs": {
+      "nombre": "Sistema Airbag / SRS",
+      "descripcion": "Sistema de retención suplementaria (SRS). Incluye airbags frontales, laterales (en versiones superiores) y pretensores de cinturón. La UCH gestiona el SRS en algunos modelos; otros tienen módulo SRS dedicado.",
+      "icono": "steering",
+      "componentes": [
+        {
+          "id": "modulo_srs",
+          "nombre": "Módulo SRS / UCH",
+          "ubicacion": "Bajo el tablero central, montado en el túnel del piso",
+          "descripcion": "Almacena la información de despliegue. Tiene condensadores que mantienen energía 10 min tras desconectar batería. Guarda códigos de accidente permanentes.",
+          "par_apriete": "22 N·m (3 tornillos M8)",
+          "herramienta_especial": "Escáner SRS, simulador de resistencia"
+        },
+        {
+          "id": "airbag_conductor",
+          "nombre": "Airbag conductor (volante)",
+          "ubicacion": "Centro del volante",
+          "descripcion": "Detonador: resistencia 2.4 Ω (medir SOLO con herramienta de simulación). Conectores amarillos. Bolsa gas nitrógeno.",
+          "par_apriete": "Tuerca volante: 45 N·m",
+          "herramienta_especial": "Extractor volante, simulador SRS"
+        },
+        {
+          "id": "reloj_contacto",
+          "nombre": "Reloj de contacto (anillo deslizante)",
+          "ubicacion": "Columna de dirección, detrás del volante",
+          "descripcion": "Transmite electricidad del airbag y controles del volante al cuerpo del vehículo. Debe estar centrado al instalar.",
+          "par_apriete": "N/A (encaja a presión)",
+          "herramienta_especial": "Procedimiento de centrado obligatorio"
+        },
+        {
+          "id": "pretensores",
+          "nombre": "Pretensores de cinturón (x2 o x4)",
+          "ubicacion": "Pilares B, montaje del cinturón",
+          "descripcion": "Pirotécnicos. Se activan simultáneamente con los airbags. Una vez disparados, el cinturón completo debe reemplazarse.",
+          "par_apriete": "45 N·m (anclaje pillar)",
+          "herramienta_especial": null
+        }
+      ],
+      "especificaciones": {
+        "tiempo_descarga_condensadores": "10 minutos mínimo tras desconectar batería",
+        "advertencia": "Sistema pirotécnico — trabajo SOLO por personal certificado en SRS"
+      }
+    },
+
+    "refrigeracion": {
+      "nombre": "Sistema de refrigeración",
+      "descripcion": "Circuito de agua con termostato, bomba de agua accionada por correa de distribución (K9K) o correa auxiliar (H4M), radiador principal, electroventiladoores y radiador de calefacción.",
+      "icono": "coolant-temperature",
+      "componentes": [
+        {
+          "id": "termostato",
+          "nombre": "Termostato",
+          "ubicacion": "Carcasa termostato en la salida de agua de la culata",
+          "descripcion": "Apertura: ~83°C (H4M) / ~89°C (K9K). Temperatura normal de trabajo: 85–95°C. Un termostato abierto de base causa calentamiento excesivo.",
+          "par_apriete": "10 N·m (brida M6)",
+          "herramienta_especial": null
+        },
+        {
+          "id": "bomba_agua",
+          "nombre": "Bomba de agua",
+          "ubicacion": "H4M: accionada por correa auxiliar / K9K: accionada por correa de distribución",
+          "descripcion": "En el K9K, la bomba de agua se cambia con el kit de distribución (cada 120 000 km). Fuga en el sello mecánico indica sustitución inmediata.",
+          "par_apriete": "22 N·m (tornillos M8)",
+          "herramienta_especial": "Kit distribución K9K (incluye bomba)"
+        },
+        {
+          "id": "radiador",
+          "nombre": "Radiador principal",
+          "ubicacion": "Frontal del vehículo, detrás de la parrilla",
+          "descripcion": "Aluminio/plástico. Capacidad aprox. 7–9 L sistema completo. Revisar aletas: sin aplastamientos ni obstrucción de bichos.",
+          "par_apriete": "8 N·m (soportes goma)",
+          "herramienta_especial": null
+        },
+        {
+          "id": "electroventilador",
+          "nombre": "Electroventiladores (x2 en algunas versiones)",
+          "ubicacion": "Detrás del radiador",
+          "descripcion": "Controlados por la UCE y la UCH. Velocidad baja: ~87°C. Velocidad alta: >100°C o con A/C activo.",
+          "par_apriete": "8 N·m (soporte)",
+          "herramienta_especial": null
+        },
+        {
+          "id": "vaso_expansion",
+          "nombre": "Vaso de expansión",
+          "ubicacion": "Compartimento motor lado derecho",
+          "descripcion": "Plástico translúcido. Nivel entre MIN y MAX con motor frío. La tapa debe mantener presión: 1.2 bar.",
+          "par_apriete": "N/A",
+          "herramienta_especial": "Probador de presión de circuito de refrigeración"
+        }
+      ],
+      "especificaciones": {
+        "refrigerante": "Glicol etilénico rojo/rosa (OAT, tipo D) — NO mezclar colores",
+        "concentracion": "50% agua destilada / 50% refrigerante (protección hasta -37°C)",
+        "capacidad_total": "6.5–8.5 L (según motor)",
+        "intervalo_cambio": "cada 2 años o 60 000 km"
+      }
+    }
+  }
+}

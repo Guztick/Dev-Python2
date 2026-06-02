@@ -1,0 +1,569 @@
+{
+  "version": "1.0",
+  "vehiculo": "Renault Duster",
+  "motores": ["H4M 1.6 SCe", "F4R 2.0", "K9K 1.5 dCi"],
+  "procedimientos": {
+
+    "P0101": {
+      "titulo": "MAF - Caudal de masa de aire fuera de rango",
+      "sistema": "Motor - Admisión",
+      "motor": ["H4M", "F4R"],
+      "icono": "air-filter",
+      "color_severidad": "advertencia",
+      "sintomas_tipicos": [
+        "Marcha en vacío irregular",
+        "Pérdida de potencia",
+        "Consumo elevado",
+        "Humo negro (mezcla rica)"
+      ],
+      "componentes_involucrados": [
+        {"nombre": "Sensor MAF (HFM)", "ubicacion": "Entre filtro de aire y mariposa", "parte_tipica": "7701048542"},
+        {"nombre": "Filtro de aire", "ubicacion": "Caja filtro lado derecho motor", "parte_tipica": "165469804R"},
+        {"nombre": "Manguera admisión", "ubicacion": "De filtro a mariposa", "parte_tipica": ""},
+        {"nombre": "UCE / PCM", "ubicacion": "Caja fusibles motor, lado izquierdo", "parte_tipica": ""}
+      ],
+      "valores_referencia": {
+        "ralenti": "2.5 – 5.0 g/s",
+        "a_2500_rpm": "10 – 18 g/s",
+        "plena_carga": "50 – 80 g/s"
+      },
+      "pasos": [
+        {
+          "num": 1,
+          "titulo": "Verificar códigos activos",
+          "detalle": "Con el escáner en modo Datos en vivo, verifica el valor del MAF en ralentí. El valor normal es 2.5–5.0 g/s. Si marca 0 g/s o más de 8 g/s en ralentí, el sensor está fuera de rango.",
+          "herramienta": "Escáner / Datos en vivo",
+          "imagen": null
+        },
+        {
+          "num": 2,
+          "titulo": "Inspección visual del filtro y mangueras",
+          "detalle": "Abre la caja del filtro de aire. Revisa que el elemento filtrante no esté saturado (color negro o marrón oscuro). Inspecciona la manguera del MAF: no debe tener grietas, huecos ni abrazaderas flojas. Una entrada de aire no mesurada hace que el MAF lea por debajo de lo real.",
+          "herramienta": "Visual / Linterna",
+          "imagen": "filtro_aire_duster.jpg"
+        },
+        {
+          "num": 3,
+          "titulo": "Medir tensión de señal del MAF",
+          "detalle": "Conector del MAF: Pin 2 = masa, Pin 3 = señal (0.8–1.0 V en ralentí; 3.5–4.5 V a fondo de pedal). Un valor fijo de 0 V indica cable cortado o sensor muerto. Un valor fijo de 5 V indica cortocircuito a positivo.",
+          "herramienta": "Multímetro / Backpin",
+          "imagen": null
+        },
+        {
+          "num": 4,
+          "titulo": "Limpieza del sensor MAF",
+          "detalle": "Si el valor es bajo pero variable, limpia el filamento con spray limpia-MAF (nunca aire comprimido directo). Deja secar 10 minutos antes de reconectar. Borra el código y realiza una prueba de conducción de 10 km.",
+          "herramienta": "Spray limpia-MAF",
+          "imagen": null
+        },
+        {
+          "num": 5,
+          "titulo": "Sustitución si persiste",
+          "detalle": "Si después de limpiar el código regresa en menos de 50 km, sustituye el sensor MAF. Usa referencia 7701048542 o equivalente Bosch 0 280 218 xxx. Tras instalar, borra códigos y readapta la UCE con ralentí estabilizado 5 min.",
+          "herramienta": "Llave Torx T20, llaves 10mm",
+          "imagen": null
+        }
+      ]
+    },
+
+    "P0171": {
+      "titulo": "Sistema demasiado pobre - Banco 1",
+      "sistema": "Motor - Mezcla",
+      "motor": ["H4M", "F4R"],
+      "icono": "gas-cylinder",
+      "color_severidad": "advertencia",
+      "sintomas_tipicos": [
+        "Ralentí irregular o colgado alto",
+        "Tirones en aceleración",
+        "Mayor consumo",
+        "Posible fallo de catalizador a largo plazo"
+      ],
+      "componentes_involucrados": [
+        {"nombre": "Sonda Lambda aguas arriba", "ubicacion": "Colector de escape, antes del catalizador", "parte_tipica": "226A08473R"},
+        {"nombre": "Sonda Lambda aguas abajo", "ubicacion": "Salida del catalizador", "parte_tipica": "226A08469R"},
+        {"nombre": "Inyectores", "ubicacion": "Riel de inyección, sobre culata", "parte_tipica": ""},
+        {"nombre": "Regulador de presión de combustible", "ubicacion": "Bomba módulo depósito", "parte_tipica": ""},
+        {"nombre": "MAF", "ubicacion": "Admisión", "parte_tipica": "7701048542"}
+      ],
+      "valores_referencia": {
+        "sonda_aguas_arriba_ralenti": "Oscila 0.1–0.9 V cada 0.5–1 s",
+        "sonda_aguas_arriba_accel": "Fijo > 0.7 V (mezcla rica momentánea)",
+        "correccion_combustible_st": "-5% a +5% (normal)",
+        "correccion_combustible_lt": "-10% a +10% (normal)"
+      },
+      "pasos": [
+        {
+          "num": 1,
+          "titulo": "Leer correcciones de combustible",
+          "detalle": "En Datos en vivo revisa STFT (corrección a corto plazo) y LTFT (corrección a largo plazo). Si LTFT supera +10%, la UCE está añadiendo combustible de forma crónica → mezcla genuinamente pobre.",
+          "herramienta": "Escáner / Datos en vivo",
+          "imagen": null
+        },
+        {
+          "num": 2,
+          "titulo": "Verificar fugas de vacío",
+          "detalle": "Con el motor caliente en ralentí, rocía con spray carburador (o agua) alrededor de: junta del cuerpo de mariposa, colector de admisión, mangueras de vacío del servofreno y purga de carbón activo. Si el ralentí cambia al rociar, hay fuga en ese punto.",
+          "herramienta": "Spray carburador / Agua",
+          "imagen": null
+        },
+        {
+          "num": 3,
+          "titulo": "Comprobar presión de combustible",
+          "detalle": "Conecta manómetro al riel. Presión estática (llave ON, motor parado): 3.5–4.0 bar. En ralentí: 3.0–3.5 bar. Si cae por debajo, revisa bomba de combustible (puede escucharse al poner llave ON: zumbido 2 s) o el regulador de presión.",
+          "herramienta": "Manómetro de combustible",
+          "imagen": null
+        },
+        {
+          "num": 4,
+          "titulo": "Verificar inyectores (balance test)",
+          "detalle": "Si el escáner permite test de actuadores, desactiva inyectores uno a uno en ralentí. El RPM debe bajar aproximadamente igual para cada inyector. Si uno no cambia el RPM, ese inyector está obstruido o muerto.",
+          "herramienta": "Escáner modo actuadores",
+          "imagen": null
+        },
+        {
+          "num": 5,
+          "titulo": "Revisar sensor Lambda aguas arriba",
+          "detalle": "En ralentí caliente, la sonda aguas arriba debe oscilar entre 0.1 V y 0.9 V con frecuencia de 1–2 ciclos por segundo. Si es fija en 0.45 V o no oscila, el sensor está muerto. Resistencia del calefactor: 3–15 Ω entre pines de calefactor.",
+          "herramienta": "Escáner / Multímetro",
+          "imagen": null
+        }
+      ]
+    },
+
+    "P0300": {
+      "titulo": "Fallo de encendido aleatorio - Varios cilindros",
+      "sistema": "Motor - Encendido",
+      "motor": ["H4M", "F4R"],
+      "icono": "lightning-bolt",
+      "color_severidad": "peligro",
+      "sintomas_tipicos": [
+        "Vibración intensa en ralentí",
+        "Luz de motor parpadeante",
+        "Pérdida notable de potencia",
+        "Olor a gasolina por el escape"
+      ],
+      "componentes_involucrados": [
+        {"nombre": "Bujías", "ubicacion": "Tapa de culata, 4 cilindros", "parte_tipica": "224011241R"},
+        {"nombre": "Bobinas de encendido (COP)", "ubicacion": "Sobre cada bujía", "parte_tipica": "224330001R"},
+        {"nombre": "Sensor de árbol de levas", "ubicacion": "Tapa de distribución delantera", "parte_tipica": "8200928880"},
+        {"nombre": "Sensor de cigüeñal", "ubicacion": "Bloque motor lado derecho", "parte_tipica": "8200512052"}
+      ],
+      "valores_referencia": {
+        "resistencia_bobina_primario": "0.5 – 2 Ω",
+        "resistencia_bobina_secundario": "6 000 – 12 000 Ω",
+        "sensor_ciguenal_reluctancia": "800 – 900 Ω (frío)"
+      },
+      "pasos": [
+        {
+          "num": 1,
+          "titulo": "Identificar cilindro(s) fallantes",
+          "detalle": "Si también hay P0301-P0304, el número indica el cilindro. Si solo hay P0300 (aleatorio), revisa la lectura de 'fallos de encendido por cilindro' en el escáner (PID 0x14–0x17 en modo 04). El cilindro con más fallos es el candidato principal.",
+          "herramienta": "Escáner",
+          "imagen": null
+        },
+        {
+          "num": 2,
+          "titulo": "Intercambiar bobinas entre cilindros",
+          "detalle": "Cambia la bobina del cilindro sospechoso al cilindro 1 (y viceversa). Si el fallo se mueve al cilindro 1, la bobina está defectuosa. Las bobinas COP del H4M se extraen desconectando el conector eléctrico y retirando el tornillo M6.",
+          "herramienta": "Destornillador Torx T30",
+          "imagen": null
+        },
+        {
+          "num": 3,
+          "titulo": "Inspeccionar y medir bujías",
+          "detalle": "Retira las bujías con llave de bujías 16mm. Gap correcto H4M: 0.9–1.1 mm. Electrodo desgastado, quemado o con depósitos negros indica problema de mezcla o aceite. Sustituye bujías si superan 30 000 km o muestran desgaste visible.",
+          "herramienta": "Llave bujías 16mm, galga de láminas",
+          "imagen": null
+        },
+        {
+          "num": 4,
+          "titulo": "Verificar compresión",
+          "detalle": "Con todas las bujías quitadas y mariposa abierta, gira el motor con el arranque 4–5 vueltas por cilindro. Compresión normal H4M: 12–14 bar. Diferencia > 2 bar entre cilindros sugiere válvulas o segmentos. Un cilindro con < 8 bar tiene problema mecánico grave.",
+          "herramienta": "Compresímetro rosca M14",
+          "imagen": null
+        },
+        {
+          "num": 5,
+          "titulo": "Revisar sistema de combustible",
+          "detalle": "Si la compresión y el encendido son correctos, revisa inyectores. Escucha con estetoscopio electrónico: cada inyector debe hacer clic rítmico a 1–2 clics por segundo en ralentí. Un inyector silencioso o errático necesita limpieza o sustitución.",
+          "herramienta": "Estetoscopio electrónico",
+          "imagen": null
+        }
+      ]
+    },
+
+    "P0341": {
+      "titulo": "Sensor de árbol de levas - Rango/rendimiento incorrecto",
+      "sistema": "Motor - Distribución",
+      "motor": ["H4M", "F4R"],
+      "icono": "cog-sync",
+      "color_severidad": "peligro",
+      "sintomas_tipicos": [
+        "Motor difícil de arrancar",
+        "Fallos de encendido",
+        "Motor 'tirones' o se apaga",
+        "Posible modo de emergencia"
+      ],
+      "componentes_involucrados": [
+        {"nombre": "Sensor árbol de levas (CMP)", "ubicacion": "Carcasa de distribución, lado admisión", "parte_tipica": "8200928880"},
+        {"nombre": "Corona fónica del árbol de levas", "ubicacion": "Extremo delantero árbol de levas", "parte_tipica": ""},
+        {"nombre": "Correa de distribución", "ubicacion": "Cubierta delantera motor", "parte_tipica": "130C17440R"}
+      ],
+      "valores_referencia": {
+        "sensor_tipo": "Hall (3 hilos): masa, 5V alimentación, señal",
+        "señal_en_arranque": "Pulsos 0–5 V sincronizados con cigüeñal",
+        "espacio_sensor_corona": "0.5 – 1.5 mm"
+      },
+      "pasos": [
+        {
+          "num": 1,
+          "titulo": "Verificar alimentación del sensor",
+          "detalle": "El sensor CMP tiene 3 pines: Pin 1 = masa (0 V), Pin 2 = alimentación 5 V, Pin 3 = señal. Con llave ON: mide entre Pin 2 y Pin 1. Debe leer exactamente 5.0 V ±0.2 V. Si no hay 5 V, el problema está en la UCE o el cableado.",
+          "herramienta": "Multímetro",
+          "imagen": null
+        },
+        {
+          "num": 2,
+          "titulo": "Leer señal con osciloscopio o escáner",
+          "detalle": "Con el motor girando (arranque), la señal del CMP debe mostrar pulsos entre 0 V y 5 V. En el escáner, el ángulo de árbol de levas debe ser un valor fijo o variable con patrón reconocible. Una señal plana en 0 V o 5 V indica sensor muerto o corona fónica dañada.",
+          "herramienta": "Osciloscopio / Escáner",
+          "imagen": null
+        },
+        {
+          "num": 3,
+          "titulo": "Inspeccionar corona fónica",
+          "detalle": "Retira la cubierta de la distribución (4 tornillos M6). Gira el motor a mano y observa la corona fónica. Ningún diente debe estar roto ni deformado. Limpia la corona con trapo seco; el óxido leve es aceptable pero los dientes doblados deben repararse.",
+          "herramienta": "Llave de cubos M6, linterna",
+          "imagen": null
+        },
+        {
+          "num": 4,
+          "titulo": "Medir entrehierro sensor-corona",
+          "detalle": "Retira el sensor (tornillo M6 + conector). Inserta galga de láminas entre el extremo del sensor y la corona fónica. El espacio debe ser 0.5–1.5 mm. Si hay más de 2 mm, el sensor está desplazado o la corona tiene holgura axial.",
+          "herramienta": "Galga de láminas",
+          "imagen": null
+        },
+        {
+          "num": 5,
+          "titulo": "Verificar correa de distribución",
+          "detalle": "Un P0341 combinado con P0016 (correlación cigüeñal-árbol de levas) indica posible salto de correa. Verifica la marca de distribución: con el cilindro 1 en PMS, la marca del árbol de levas debe coincidir exactamente con la marca de la carcasa. Un diente de desfase = P0341.",
+          "herramienta": "Claves de distribución Renault",
+          "imagen": null
+        }
+      ]
+    },
+
+    "P0401": {
+      "titulo": "Flujo insuficiente EGR - Banco 1",
+      "sistema": "Motor - EGR",
+      "motor": ["K9K"],
+      "icono": "pipe-valve",
+      "color_severidad": "advertencia",
+      "sintomas_tipicos": [
+        "Luz de motor encendida",
+        "Ligero aumento de consumo",
+        "Posibles golpeteos en caliente",
+        "En casos severos: humo negro"
+      ],
+      "componentes_involucrados": [
+        {"nombre": "Válvula EGR", "ubicacion": "Colector admisión, lado izquierdo", "parte_tipica": "8200560525"},
+        {"nombre": "Enfriador EGR", "ubicacion": "Detrás del turbo, circuito de refrigeración", "parte_tipica": "149103717R"},
+        {"nombre": "Sensor de presión diferencial", "ubicacion": "Manguera entre colector y EGR", "parte_tipica": ""},
+        {"nombre": "Actuador EGR (solenoide)", "ubicacion": "Integrado en la válvula EGR", "parte_tipica": ""}
+      ],
+      "valores_referencia": {
+        "posicion_egr_ralenti": "0% (cerrada)",
+        "posicion_egr_parcial": "20 – 60%",
+        "resistencia_bobina_egr": "15 – 25 Ω",
+        "temperatura_egr_caliente": "Diferencia < 30°C entre entrada y salida (si frío → tapado)"
+      },
+      "pasos": [
+        {
+          "num": 1,
+          "titulo": "Prueba de actuador EGR desde escáner",
+          "detalle": "En el menú de actuadores de la UCE (si tu escáner lo permite), activa la válvula EGR al 50% con el motor en ralentí caliente. El RPM debe caer 50–100 rpm y el motor debe notar la entrada de gases. Si el RPM no cambia, la válvula está atascada cerrada.",
+          "herramienta": "Escáner / Actuadores",
+          "imagen": null
+        },
+        {
+          "num": 2,
+          "titulo": "Inspección visual de la válvula EGR",
+          "detalle": "Retira el conducto de admisión (2 abrazaderas). Observa el interior de la válvula con linterna. Es normal encontrar carbonilla negra, pero si la válvula está completamente bloqueada o el vástago no se mueve al presionarlo (con motor frío), necesita limpieza o sustitución.",
+          "herramienta": "Destornillador, linterna",
+          "imagen": "egr_duster_k9k.jpg"
+        },
+        {
+          "num": 3,
+          "titulo": "Limpieza de la válvula EGR",
+          "detalle": "Desconecta el conector eléctrico y retira la válvula (3 tornillos M8). Con spray limpia-carburador y cepillo metálico, limpia el vástago y la cámara. Mueve el vástago manualmente; debe deslizarse libremente. NO uses decapante agresivo cerca del solenoide.",
+          "herramienta": "Spray limpia-carburador, cepillo metálico, llave M8",
+          "imagen": null
+        },
+        {
+          "num": 4,
+          "titulo": "Verificar mangueras del circuito EGR",
+          "detalle": "Las mangueras de vacío o de presión diferencial deben estar sin grietas ni obstrucciones. En el K9K la EGR es eléctrica (no de vacío), pero el circuito de refrigeración del enfriador EGR debe tener caudal correcto. Revisa que las mangueras de refrigerante del enfriador EGR no estén colapsadas.",
+          "herramienta": "Visual",
+          "imagen": null
+        },
+        {
+          "num": 5,
+          "titulo": "Borrar código y ciclo de conducción",
+          "detalle": "Tras la limpieza/reparación, borra el código y realiza un ciclo de conducción: calentamiento, autopista 10 min, desaceleración. Si el código no regresa en 3 ciclos, la reparación fue exitosa. Si regresa, considera sustituir la válvula EGR completa.",
+          "herramienta": "Escáner",
+          "imagen": null
+        }
+      ]
+    },
+
+    "P0087": {
+      "titulo": "Presión del riel de combustible baja - Sistema 1",
+      "sistema": "Motor - Combustible",
+      "motor": ["K9K"],
+      "icono": "fuel",
+      "color_severidad": "peligro",
+      "sintomas_tipicos": [
+        "Dificultad para arrancar en caliente",
+        "Humo negro o azul al acelerar",
+        "Pérdida de potencia severa",
+        "Posible modo limp-home (limitación de RPM)"
+      ],
+      "componentes_involucrados": [
+        {"nombre": "Bomba alta presión (HP)", "ubicacion": "Bloque motor, accionada por árbol de levas", "parte_tipica": "167009804R"},
+        {"nombre": "Regulador de presión (IMV)", "ubicacion": "Bomba alta presión", "parte_tipica": "8200468130"},
+        {"nombre": "Sensor de presión del riel", "ubicacion": "Riel de combustible (common rail)", "parte_tipica": "8200938751"},
+        {"nombre": "Válvula limitadora de presión", "ubicacion": "Extremo del riel de combustible", "parte_tipica": ""},
+        {"nombre": "Filtro de combustible", "ubicacion": "Soporte filtro lado derecho motor", "parte_tipica": "164003909R"}
+      ],
+      "valores_referencia": {
+        "presion_ralenti": "250 – 400 bar",
+        "presion_plena_carga": "1400 – 1600 bar",
+        "presion_minima_arranque": "200 bar",
+        "diferencia_real_vs_objetivo": "< 50 bar (si > 100 bar → fuga interna o bomba)"
+      },
+      "pasos": [
+        {
+          "num": 1,
+          "titulo": "Leer presión real vs presión objetivo",
+          "detalle": "En Datos en vivo, observa 'Presión riel real' y 'Presión riel objetivo'. En ralentí caliente: objetivo ~300 bar, real debe seguirle a ±30 bar. Si la diferencia es > 100 bar constantemente, hay un problema de caudal (bomba, IMV, o fuga interna en inyectores).",
+          "herramienta": "Escáner / Datos en vivo",
+          "imagen": null
+        },
+        {
+          "num": 2,
+          "titulo": "Sustituir filtro de combustible",
+          "detalle": "El K9K es muy sensible a la calidad del filtro. Intervalo: cada 30 000 km o 2 años. Ubica el filtro en el soporte derecho del motor. Usa la llave de cartucho y sustituye también la junta tórica. Purga el circuito girando la bomba manual de purga (si la tiene) hasta sentir resistencia.",
+          "herramienta": "Llave cartucho filtro, recipiente para diesel",
+          "imagen": null
+        },
+        {
+          "num": 3,
+          "titulo": "Verificar IMV (regulador de presión)",
+          "detalle": "El IMV (Inlet Metering Valve) controla el caudal de la bomba alta presión. Resistencia normal: 5–6 Ω. Mídela en el conector del IMV (motor frío). Si la resistencia es muy baja o muy alta, sustituye el IMV. Algunos síntomas de IMV defectuoso: presión de riel normal en ralentí pero no sube en carga.",
+          "herramienta": "Multímetro",
+          "imagen": null
+        },
+        {
+          "num": 4,
+          "titulo": "Test de retorno de inyectores",
+          "detalle": "Los inyectores del K9K tienen retorno de combustible calibrado. Con el motor en ralentí, mide el caudal de retorno con probetas o mangueras transparentes durante 30 s. El retorno total no debe superar 40 ml en 30 s (ralentí). Un inyector con retorno > 15 ml solo está desgastado.",
+          "herramienta": "Probetas de caudal (kit retorno inyectores)",
+          "imagen": null
+        },
+        {
+          "num": 5,
+          "titulo": "Verificar bomba alta presión",
+          "detalle": "Si los inyectores y el IMV están bien pero la presión sigue baja, la bomba HP está desgastada. La bomba no es reparable en campo: requiere sustitución. Antes de cambiarla, verifica que el accionamiento mecánico (lóbulo del árbol de levas) no esté desgastado.",
+          "herramienta": "Escáner / Mecánico especializado",
+          "imagen": null
+        }
+      ]
+    },
+
+    "C0035": {
+      "titulo": "Sensor de velocidad de rueda - Circuito delantero derecho",
+      "sistema": "ABS / ESP",
+      "motor": ["H4M", "F4R", "K9K"],
+      "icono": "car-brake-abs",
+      "color_severidad": "peligro",
+      "sintomas_tipicos": [
+        "Luz ABS encendida",
+        "Luz ESP encendida",
+        "ABS desactivado",
+        "Posible limitación del ESP"
+      ],
+      "componentes_involucrados": [
+        {"nombre": "Sensor ABS rueda delantera derecha", "ubicacion": "Mangueta delantera derecha, sobre el buje", "parte_tipica": "479108658R"},
+        {"nombre": "Corona fónica ABS", "ubicacion": "Buje / junta homocinética", "parte_tipica": ""},
+        {"nombre": "Módulo ABS/ESP", "ubicacion": "Compartimento motor, lado izquierdo", "parte_tipica": ""},
+        {"nombre": "Cableado sensor (hasta módulo ABS)", "ubicacion": "Paso de rueda", "parte_tipica": ""}
+      ],
+      "valores_referencia": {
+        "sensor_tipo": "Activo (Hall, 2 hilos): alimentación 12V + señal PWM",
+        "señal_en_movimiento": "Frecuencia proporcional a velocidad (0 km/h = 0 Hz)",
+        "resistencia_cable": "< 5 Ω entre sensor y módulo",
+        "espacio_sensor_corona": "0.3 – 1.5 mm"
+      },
+      "pasos": [
+        {
+          "num": 1,
+          "titulo": "Confirmar sensor afectado",
+          "detalle": "En Datos en vivo, revisa las 4 velocidades de rueda (PID ABS). Maneja despacio y observa cuál rueda muestra 0 km/h mientras las demás aumentan, o cuál fluctúa aleatoriamente. El P/C0035 indica rueda delantera derecha; C0040 = DD, C0041 = TI, C0045 = TD.",
+          "herramienta": "Escáner / Datos en vivo",
+          "imagen": null
+        },
+        {
+          "num": 2,
+          "titulo": "Inspección visual del sensor y corona",
+          "detalle": "Eleva el vehículo y retira la rueda delantera derecha. Localiza el sensor ABS en la mangueta (tornillo M8). Inspecciona el cuerpo del sensor: no debe estar roto ni con impacto visible. Gira el buje a mano y observa la corona fónica magnética: ningún diente roto ni depósito metálico.",
+          "herramienta": "Gato, caballete, llave M8",
+          "imagen": "sensor_abs_duster.jpg"
+        },
+        {
+          "num": 3,
+          "titulo": "Medir alimentación en el conector",
+          "detalle": "En los sensores activos (Duster desde 2010): Pin A = masa, Pin B = señal/alimentación. Con llave ON y motor parado: debe haber 12 V entre B y A. Si no hay 12V, el problema está en el módulo ABS o el cableado (busca el cable pinzado en el paso de rueda).",
+          "herramienta": "Multímetro",
+          "imagen": null
+        },
+        {
+          "num": 4,
+          "titulo": "Verificar señal del sensor en movimiento",
+          "detalle": "Si tienes osciloscopio: conecta entre Pin B y masa. Al girar el buje a mano lentamente, debe aparecer una señal cuadrada entre 0 V y 12 V. La frecuencia aumenta con la velocidad de giro. Sin señal: sensor defectuoso. Señal ruidosa/irregular: corona fónica sucia o dañada.",
+          "herramienta": "Osciloscopio",
+          "imagen": null
+        },
+        {
+          "num": 5,
+          "titulo": "Sustitución del sensor",
+          "detalle": "Retira el tornillo M8 del sensor (aplica aflojatodo si está oxidado). Al instalar el nuevo sensor, asegúrate de que el entrehierro sea 0.3–1.5 mm (no necesita ajuste: el alojamiento lo determina). Par de apriete tornillo sensor: 8 N·m. Pasa el cable por el mismo recorrido original.",
+          "herramienta": "Llave M8, par de apriete, aflojatodo",
+          "imagen": null
+        }
+      ]
+    },
+
+    "B0001": {
+      "titulo": "Circuito del detonador del airbag del conductor",
+      "sistema": "Airbag / SRS",
+      "motor": ["H4M", "F4R", "K9K"],
+      "icono": "steering",
+      "color_severidad": "critico",
+      "sintomas_tipicos": [
+        "Luz SRS/Airbag encendida permanentemente",
+        "Airbags desactivados (NO protegen en accidente)",
+        "Posible pitido corto al arrancar"
+      ],
+      "componentes_involucrados": [
+        {"nombre": "Airbag conductor (volante)", "ubicacion": "Centro del volante", "parte_tipica": "985100004R"},
+        {"nombre": "Reloj de contacto (anillo deslizante)", "ubicacion": "Columna de dirección, detrás del volante", "parte_tipica": "255674EA0A"},
+        {"nombre": "Módulo UCH / Airbag", "ubicacion": "Bajo tablero, centro", "parte_tipica": ""}
+      ],
+      "valores_referencia": {
+        "resistencia_detonador": "1.8 – 3.3 Ω (mide SOLO con herramienta resistor de simulación)",
+        "advertencia": "NUNCA midas con multímetro directamente el detonador. Riesgo de explosión."
+      },
+      "pasos": [
+        {
+          "num": 1,
+          "titulo": "PRECAUCIÓN — PROTOCOLO DE SEGURIDAD",
+          "detalle": "ANTES de cualquier trabajo: desconecta la batería y espera MÍNIMO 10 MINUTOS para que los condensadores del módulo SRS se descarguen. Nunca trabajes con la batería conectada cerca del volante. Usa ropa antiestática.",
+          "herramienta": "Llave 10mm para batería",
+          "imagen": null
+        },
+        {
+          "num": 2,
+          "titulo": "Leer subcódigos del módulo SRS",
+          "detalle": "Con el escáner conectado al módulo SRS (no al OBD general), lee los DTCs detallados. El B0001 indica el circuito del airbag del conductor pero el subkódigo revela si es: cortocircuito a masa, cortocircuito a positivo, circuito abierto (roto) o resistencia fuera de rango.",
+          "herramienta": "Escáner con acceso SRS",
+          "imagen": null
+        },
+        {
+          "num": 3,
+          "titulo": "Verificar el reloj de contacto",
+          "detalle": "El componente más común de fallar es el reloj de contacto (anillo deslizante). Síntomas adicionales: bocina intermitente, controles del volante que fallan. Para inspeccionarlo, retira el volante (ver procedimiento de sustitución). Mide la continuidad del circuito del airbag a través del reloj.",
+          "herramienta": "Llave volante M30, extractor de volante",
+          "imagen": null
+        },
+        {
+          "num": 4,
+          "titulo": "Inspeccionar conector bajo el volante",
+          "detalle": "El cableado espiral (pigtail) del airbag del conductor baja por la columna. Busca daños en los conectores amarillos (siempre amarillo = SRS). Un conector mal asentado o con terminal corroída puede causar este código. Limpia con spray dieléctrico.",
+          "herramienta": "Visual, spray dieléctrico",
+          "imagen": null
+        },
+        {
+          "num": 5,
+          "titulo": "Evaluación profesional recomendada",
+          "detalle": "El sistema SRS requiere herramienta específica para medir sin riesgo. Si el código persiste tras verificar conectores y reloj de contacto, lleva el vehículo a un taller con simulador de resistencia SRS. NO sustituyas el airbag sin resetear el módulo SRS con herramienta adecuada.",
+          "herramienta": "Taller especializado SRS",
+          "imagen": null
+        }
+      ]
+    },
+
+    "U0100": {
+      "titulo": "Pérdida de comunicación con ECM/PCM",
+      "sistema": "Red CAN",
+      "motor": ["H4M", "F4R", "K9K"],
+      "icono": "lan-disconnect",
+      "color_severidad": "peligro",
+      "sintomas_tipicos": [
+        "Múltiples luces encendidas (motor, ABS, ESP)",
+        "Tablero sin datos (sin velocidad, sin RPM)",
+        "Motor puede no arrancar",
+        "Varios módulos reportan U0xxx"
+      ],
+      "componentes_involucrados": [
+        {"nombre": "Bus CAN de alta velocidad", "ubicacion": "Red de cableado general del vehículo", "parte_tipica": ""},
+        {"nombre": "UCE/PCM", "ubicacion": "Caja fusibles compartimento motor", "parte_tipica": ""},
+        {"nombre": "Gateway/UCH", "ubicacion": "Bajo tablero lado conductor", "parte_tipica": ""},
+        {"nombre": "Terminadores CAN (120 Ω)", "ubicacion": "Extremos del bus, dentro de PCM y ABS", "parte_tipica": ""}
+      ],
+      "valores_referencia": {
+        "resistencia_bus_can": "60 Ω (ambos terminadores en paralelo)",
+        "tension_can_high_reposo": "2.5 V",
+        "tension_can_low_reposo": "2.5 V",
+        "tension_can_high_activo": "3.5 V",
+        "tension_can_low_activo": "1.5 V"
+      },
+      "pasos": [
+        {
+          "num": 1,
+          "titulo": "Medir resistencia del bus CAN",
+          "detalle": "Con llave OFF y batería conectada: en el conector OBD-II, mide entre Pin 6 (CAN High) y Pin 14 (CAN Low). Debe leer ~60 Ω (los dos terminadores de 120 Ω en paralelo). Si lees 120 Ω: un terminador falla. Si lees 40 Ω: hay un módulo provocando cortocircuito al bus.",
+          "herramienta": "Multímetro, conector OBD-II",
+          "imagen": null
+        },
+        {
+          "num": 2,
+          "titulo": "Identificar el módulo desconectado",
+          "detalle": "U0100 = UCE no responde. Verifica que la UCE tenga alimentación: pin de masa a carrocería correcto, y alimentación de batería en pin principal. Revisa el fusible de la UCE en la caja de fusibles del motor (consulta el diagrama del capó: fusible F13 o equivalente).",
+          "herramienta": "Multímetro, diagrama de fusibles",
+          "imagen": null
+        },
+        {
+          "num": 3,
+          "titulo": "Verificar tensiones del bus CAN",
+          "detalle": "Con llave ON: en Pin 6 OBD debe haber 2.5 V en reposo y subir a 3.5 V cuando hay tráfico. En Pin 14 debe bajar a 1.5 V simultáneamente. Si ambos pines tienen igual tensión (ambos a 2.5 V siempre), el bus está en cortocircuito entre CAN High y CAN Low.",
+          "herramienta": "Multímetro / Osciloscopio",
+          "imagen": null
+        },
+        {
+          "num": 4,
+          "titulo": "Aislar módulos uno por uno",
+          "detalle": "Si la resistencia CAN está mal, desconecta módulos uno por uno (empezando por los menos críticos: HVAC, radio, TPMS). Tras cada desconexión, mide la resistencia CAN de nuevo. Cuando la resistencia vuelva a 60 Ω, el último módulo desconectado era el culpable.",
+          "herramienta": "Multímetro, información de conectores",
+          "imagen": null
+        },
+        {
+          "num": 5,
+          "titulo": "Verificar masa de la UCE",
+          "detalle": "Un fallo de masa de la UCE causa síntomas idénticos a U0100. La UCE tiene al menos 2 puntos de masa: uno en el bloque motor y otro en la carrocería cerca de la batería. Mide la resistencia entre el pin de masa del conector UCE y la masa negativa de la batería. Debe ser < 0.5 Ω.",
+          "herramienta": "Multímetro",
+          "imagen": null
+        }
+      ]
+    }
+  }
+}

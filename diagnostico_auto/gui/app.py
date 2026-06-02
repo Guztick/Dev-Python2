@@ -34,6 +34,7 @@ from gui.screens.scan_screen import PantallaEscaneo
 from gui.screens.dtc_screen import PantallaDTCs
 from gui.screens.livedata_screen import PantallaDatosVivo
 from gui.screens.adapter_screen import PantallaAdaptador
+from gui.screens.manual_screen import PantallaManual
 
 
 class PantallaPrincipal(MDScreen):
@@ -66,6 +67,7 @@ class PantallaPrincipal(MDScreen):
         self._dtcs = PantallaDTCs()
         self._datos = PantallaDatosVivo()
         self._adaptador = PantallaAdaptador()
+        self._manual = PantallaManual()
 
         # Renombrar para coincidir con la navegación interna
         self._dashboard.name = "inicio"
@@ -73,9 +75,10 @@ class PantallaPrincipal(MDScreen):
         self._dtcs.name = "dtcs"
         self._datos.name = "datos"
         self._adaptador.name = "adaptador"
+        self._manual.name = "manual"
 
         for s in (self._dashboard, self._escaneo, self._dtcs,
-                  self._datos, self._adaptador):
+                  self._datos, self._adaptador, self._manual):
             self._secciones.add_widget(s)
 
         # Barra de navegación inferior
@@ -85,6 +88,7 @@ class PantallaPrincipal(MDScreen):
                 ("radar", "Escaneo", "escaneo"),
                 ("alert-circle", "DTCs", "dtcs"),
                 ("gauge", "Datos", "datos"),
+                ("book-wrench", "Manual", "manual"),
                 ("usb", "Escáner", "adaptador"),
             ],
             on_cambio=self._cambiar_seccion,
@@ -110,6 +114,15 @@ class PantallaPrincipal(MDScreen):
         destino = mapeo.get(seccion, "inicio")
         self._secciones.current = destino
         self._navbar.set_activo(destino)
+
+    def ir_a_procedimiento_dtc(self, codigo_dtc: str):
+        """
+        Navega al manual y muestra el procedimiento del código DTC.
+        Llamado desde PantallaDTCs al pulsar 'Ver procedimiento'.
+        """
+        self._secciones.current = "manual"
+        self._navbar.set_activo("manual")
+        self._manual.ir_a_procedimiento(codigo_dtc)
 
     def _on_escaneo_resultado(self, num_dtcs, num_modulos):
         """Actualiza el dashboard con el resumen del escaneo."""
