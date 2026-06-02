@@ -1,0 +1,13 @@
+# DiagnósticoPro — Dependencias para PC (Windows / Linux / macOS)
+# Instalar con: pip install -r requirements-pc.txt
+
+# Interfaz gráfica
+kivy==2.3.1
+kivymd==1.2.0
+pillow>=10.0
+
+# Comunicación con adaptadores OBD-II
+pyserial>=3.5          # USB y Bluetooth (COM virtual en Windows)
+
+# Opcional — solo si usas adaptadores WiFi en LAN (ya incluido en stdlib)
+# (socket está en Python stdlib, no se necesita instalar nada extra)

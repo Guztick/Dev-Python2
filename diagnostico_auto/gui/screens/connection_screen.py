@@ -268,15 +268,21 @@ class PantallaConexion(MDScreen):
         self._btn_buscar.opacity = 1 if permite_busqueda else 0
         self._btn_buscar.disabled = not permite_busqueda
 
+        import os
+        es_windows = os.name == "nt"
         if boton.tipo == TipoAdaptador.WIFI:
             self._campo_dir.text = "192.168.0.10:35000"
             self._campo_dir.hint_text = "IP:Puerto del adaptador WiFi"
         elif boton.tipo == TipoAdaptador.BLUETOOTH:
-            self._campo_dir.text = ""
-            self._campo_dir.hint_text = "Dirección MAC (o busca dispositivos)"
+            self._campo_dir.text = "COM5" if es_windows else ""
+            self._campo_dir.hint_text = ("Puerto COM asignado (ej: COM5) o busca dispositivos"
+                                         if es_windows else
+                                         "Puerto rfcomm (ej: /dev/rfcomm0) o MAC")
         elif boton.tipo == TipoAdaptador.USB:
-            self._campo_dir.text = "/dev/ttyUSB0"
-            self._campo_dir.hint_text = "Puerto serial (o busca dispositivos)"
+            self._campo_dir.text = "COM3" if es_windows else "/dev/ttyUSB0"
+            self._campo_dir.hint_text = ("Puerto COM (ej: COM3) o busca dispositivos"
+                                         if es_windows else
+                                         "Puerto serial (ej: /dev/ttyUSB0)")
         else:
             self._campo_dir.text = ""
 

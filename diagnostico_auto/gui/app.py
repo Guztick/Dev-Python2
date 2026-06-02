@@ -147,9 +147,11 @@ class DiagnosticoProApp(MDApp):
         # Color de fondo de la ventana
         Window.clearcolor = Color.FONDO
 
-        # En escritorio, simular proporción de teléfono para previsualizar
+        # Tamaño de ventana para escritorio
         if not self._es_android():
-            Window.size = (400, 800)
+            Window.size = (480, 860)
+            Window.minimum_width = 360
+            Window.minimum_height = 600
 
         # Gestor principal de pantallas
         self._sm = MDScreenManager()
