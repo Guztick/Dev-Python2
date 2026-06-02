@@ -1,0 +1,14 @@
+# DiagnosticoPro — Dependencias del proyecto
+
+# Comunicación serial (ELM327 USB, BT serial en desktop)
+pyserial>=3.5
+
+# Interfaz gráfica Android
+kivy>=2.3.0
+kivymd>=1.2.0
+
+# Opcional — Bluetooth en desktop (no necesario en Android, usa Pyjnius)
+# PyBluez>=0.23   # Solo Linux/Windows desktop
+
+# Utilidades
+python-dotenv>=1.0.0

@@ -1,0 +1,52 @@
+name: Compilar APK Android
+
+# Compila el APK de DiagnosticoPro en la nube.
+# Se ejecuta manualmente o al hacer push de cambios en el código.
+on:
+  workflow_dispatch:        # Permite ejecutarlo manualmente desde la pestaña Actions
+  push:
+    branches:
+      - claude/**
+    paths:
+      - 'diagnostico_auto/**'
+      - 'buildozer.spec'
+      - '.github/workflows/build-apk.yml'
+
+jobs:
+  build:
+    name: Build APK con Buildozer
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Descargar código
+        uses: actions/checkout@v4
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Cachear dependencias de Buildozer
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.buildozer
+            .buildozer
+          key: buildozer-${{ runner.os }}-${{ hashFiles('buildozer.spec') }}
+          restore-keys: |
+            buildozer-${{ runner.os }}-
+
+      - name: Compilar APK (debug)
+        uses: ArtemSBulgakov/buildozer-action@v1
+        id: buildozer
+        with:
+          command: buildozer android debug
+          buildozer_version: stable
+
+      - name: Subir APK como artefacto descargable
+        uses: actions/upload-artifact@v4
+        with:
+          name: DiagnosticoPro-APK
+          path: bin/*.apk
+          if-no-files-found: error
+          retention-days: 30
