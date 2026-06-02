@@ -18,6 +18,7 @@ from kivymd.uix.relativelayout import MDRelativeLayout
 
 from gui.theme import Color, Dim, Fuente
 from gui.controller import controlador, TipoAdaptador, EstadoConexion
+from gui.screens.drivers_dialog import DialogoDrivers
 
 
 class BotonAdaptador(MDCard):
@@ -90,6 +91,7 @@ class PantallaConexion(MDScreen):
         self.md_bg_color = Color.FONDO
         self._tipo_seleccionado = TipoAdaptador.DEMO
         self._botones_adapt = []
+        self._dialogo_drivers = DialogoDrivers()
         self._construir()
 
     def _construir(self):
@@ -235,6 +237,17 @@ class PantallaConexion(MDScreen):
         )
         self._btn_buscar.bind(on_release=self._buscar_dispositivos)
 
+        # ===== Enlace de ayuda con drivers (USB) =====
+        self._btn_drivers = MDFlatButton(
+            text="¿Problemas con el adaptador USB?  Verificar drivers",
+            theme_text_color="Custom",
+            text_color=Color.TEXTO_SUAVE,
+            font_size=Fuente.SECUNDARIO,
+            size_hint=(1, None),
+            height=dp(36),
+        )
+        self._btn_drivers.bind(on_release=self._abrir_drivers)
+
         # Espaciador flexible
         espaciador = MDBoxLayout()
 
@@ -245,6 +258,7 @@ class PantallaConexion(MDScreen):
         raiz.add_widget(grid_adapt)
         raiz.add_widget(self._campo_dir)
         raiz.add_widget(self._btn_buscar)
+        raiz.add_widget(self._btn_drivers)
         raiz.add_widget(espaciador)
         raiz.add_widget(self._tarjeta_estado)
         raiz.add_widget(self._btn_conectar)
@@ -285,6 +299,10 @@ class PantallaConexion(MDScreen):
                                          "Puerto serial (ej: /dev/ttyUSB0)")
         else:
             self._campo_dir.text = ""
+
+    def _abrir_drivers(self, *_):
+        """Abre el diálogo de gestión de drivers."""
+        self._dialogo_drivers.abrir()
 
     def _buscar_dispositivos(self, *_):
         """Inicia la búsqueda de adaptadores Bluetooth/USB disponibles."""

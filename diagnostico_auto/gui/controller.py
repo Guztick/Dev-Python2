@@ -139,7 +139,7 @@ class Controlador:
                 conexion = ConexionWiFi(host=ip or "192.168.0.10",
                                         puerto=int(puerto) if puerto else 35000)
             elif tipo == TipoAdaptador.BLUETOOTH:
-                conexion = ConexionBluetooth(direccion_mac=direccion)
+                conexion = ConexionBluetooth(direccion=direccion)
             elif tipo == TipoAdaptador.USB:
                 conexion = ConexionSerial(puerto=direccion)
             else:
@@ -225,6 +225,74 @@ class Controlador:
                 nombre="Audífonos JBL", direccion="A4:77:58:1C:2D:9E",
                 tipo="bluetooth", emparejado=True,
                 descripcion="Dispositivo emparejado"),
+        ]
+
+    # ------------------------------------------------------------------
+    # Gestión de drivers (PC)
+    # ------------------------------------------------------------------
+
+    def diagnosticar_drivers(self, on_completo: Callable[[list], None]) -> None:
+        """Detecta los adaptadores USB y el estado de sus drivers en un hilo."""
+        hilo = threading.Thread(
+            target=self._diagnosticar_drivers_worker, args=(on_completo,), daemon=True)
+        hilo.start()
+
+    def _diagnosticar_drivers_worker(self, on_completo) -> None:
+        if self.modo_demo:
+            time.sleep(1.0)
+            on_completo(self._drivers_demo())
+            return
+        try:
+            from core.hardware.drivers import GestorDrivers
+            gestor = GestorDrivers()
+            dispositivos = gestor.diagnosticar()
+            on_completo(dispositivos)
+        except Exception as e:
+            logger.error(f"Error diagnosticando drivers: {e}")
+            on_completo([])
+
+    def instalar_driver(self, dispositivo, on_completo: Callable[[bool, str], None]) -> None:
+        """Instala el driver de un dispositivo (instalador local o descarga)."""
+        hilo = threading.Thread(
+            target=self._instalar_driver_worker,
+            args=(dispositivo, on_completo), daemon=True)
+        hilo.start()
+
+    def _instalar_driver_worker(self, dispositivo, on_completo) -> None:
+        try:
+            from core.hardware.drivers import GestorDrivers
+            gestor = GestorDrivers()
+            if not dispositivo.chip:
+                on_completo(False, "Chip no identificado — no hay driver asociado")
+                return
+            exito, mensaje = gestor.instalar_driver(dispositivo.chip)
+            on_completo(exito, mensaje)
+        except Exception as e:
+            logger.error(f"Error instalando driver: {e}")
+            on_completo(False, str(e))
+
+    def abrir_administrador_dispositivos(self) -> bool:
+        """Abre el Administrador de dispositivos de Windows."""
+        try:
+            from core.hardware.drivers import GestorDrivers
+            return GestorDrivers().abrir_administrador_dispositivos()
+        except Exception as e:
+            logger.error(f"Error abriendo administrador: {e}")
+            return False
+
+    def _drivers_demo(self) -> list:
+        """Dispositivos de demostración para previsualizar la sección de drivers."""
+        from core.hardware.drivers import (
+            DispositivoDriver, EstadoDriver, identificar_chip)
+        return [
+            DispositivoDriver(
+                nombre="USB-SERIAL CH340", vid="1A86", pid="7523",
+                puerto="COM3", estado=EstadoDriver.INSTALADO,
+                chip=identificar_chip("1A86", "7523")),
+            DispositivoDriver(
+                nombre="CP2102 USB to UART Bridge", vid="10C4", pid="EA60",
+                puerto="", estado=EstadoDriver.FALTANTE,
+                chip=identificar_chip("10C4", "EA60")),
         ]
 
     # ------------------------------------------------------------------

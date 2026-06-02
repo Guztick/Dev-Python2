@@ -12,11 +12,35 @@ En Android:
   - Bluetooth: API nativa (dispositivos emparejados).
   - USB: UsbManager de Android.
 """
+import os
 import logging
+import subprocess
 from dataclasses import dataclass
 from typing import List
 
 logger = logging.getLogger(__name__)
+
+
+def _powershell(comando: str, timeout: int = 15) -> str:
+    """Ejecuta un comando PowerShell y retorna su salida (solo Windows)."""
+    if os.name != "nt":
+        return ""
+    try:
+        startupinfo = None
+        creationflags = 0
+        if hasattr(subprocess, "STARTUPINFO"):
+            startupinfo = subprocess.STARTUPINFO()
+            startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+            creationflags = getattr(subprocess, "CREATE_NO_WINDOW", 0)
+        resultado = subprocess.run(
+            ["powershell", "-NoProfile", "-NonInteractive", "-Command", comando],
+            capture_output=True, text=True, timeout=timeout,
+            startupinfo=startupinfo, creationflags=creationflags,
+        )
+        return resultado.stdout.strip()
+    except Exception as e:
+        logger.debug(f"Error PowerShell: {e}")
+        return ""
 
 
 @dataclass
@@ -69,6 +93,7 @@ class DescubridorPuertosPC:
 
     def listar(self) -> List[DispositivoDescubierto]:
         dispositivos = []
+        puertos_vistos = set()
         try:
             from serial.tools import list_ports
             for p in list_ports.comports():
@@ -84,6 +109,7 @@ class DescubridorPuertosPC:
                 tipo = "bluetooth" if es_bt else ("usb" if es_usb else "serial")
                 descripcion = f"{p.manufacturer or ''} · {p.hwid or ''}".strip(" ·")
 
+                puertos_vistos.add(p.device.upper())
                 dispositivos.append(DispositivoDescubierto(
                     nombre=nombre,
                     direccion=p.device,   # COM5, /dev/ttyUSB0, etc.
@@ -97,8 +123,54 @@ class DescubridorPuertosPC:
         except Exception as e:
             logger.error(f"Error listando puertos: {e}")
 
+        # En Windows, añadir dispositivos Bluetooth emparejados que aún no
+        # tengan puerto COM asignado (para guiar al usuario a configurarlos).
+        if os.name == "nt":
+            for bt in self._bluetooth_emparejados_windows():
+                dispositivos.append(bt)
+
         # Primero los probables OBD, luego los BT, luego el resto
         dispositivos.sort(key=lambda d: (not d.probable_obd, d.tipo != "bluetooth", d.nombre))
+        return dispositivos
+
+    def _bluetooth_emparejados_windows(self) -> List[DispositivoDescubierto]:
+        """
+        Lista dispositivos Bluetooth emparejados en Windows vía PowerShell.
+        Útil para detectar un ELM327 BT que está emparejado pero todavía
+        sin puerto COM saliente configurado.
+        """
+        dispositivos = []
+        try:
+            comando = (
+                "Get-PnpDevice -Class Bluetooth -PresentOnly | "
+                "Where-Object { $_.Status -eq 'OK' } | "
+                "Select-Object FriendlyName, InstanceId | ConvertTo-Json -Compress"
+            )
+            salida = _powershell(comando)
+            if not salida:
+                return []
+            import json
+            datos = json.loads(salida)
+            if isinstance(datos, dict):
+                datos = [datos]
+            for d in datos:
+                nombre = d.get("FriendlyName", "") or ""
+                # Filtrar entradas genéricas del adaptador BT local
+                if not nombre or "adapter" in nombre.lower() or \
+                   "enumerator" in nombre.lower() or "radio" in nombre.lower():
+                    continue
+                disp = DispositivoDescubierto(
+                    nombre=nombre,
+                    direccion="",   # Sin puerto COM directo todavía
+                    tipo="bluetooth",
+                    emparejado=True,
+                    descripcion="Emparejado · configura un puerto COM saliente para conectar",
+                )
+                # Solo añadir los que parezcan OBD para no saturar la lista
+                if disp.probable_obd:
+                    dispositivos.append(disp)
+        except Exception as e:
+            logger.debug(f"No se pudieron listar dispositivos BT en Windows: {e}")
         return dispositivos
 
 

@@ -1,0 +1,48 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Ejecutar DiagnosticoPro (iniciar.bat)",
+            "type": "shell",
+            "windows": {
+                "command": "${workspaceFolder}\\iniciar.bat"
+            },
+            "command": "${workspaceFolder}/iniciar.bat",
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "Instalar dependencias (instalar.bat)",
+            "type": "shell",
+            "windows": {
+                "command": "${workspaceFolder}\\instalar.bat"
+            },
+            "command": "${workspaceFolder}/instalar.bat",
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            }
+        },
+        {
+            "label": "Verificar dependencias (run.py --check)",
+            "type": "shell",
+            "windows": {
+                "command": "py run.py --check"
+            },
+            "command": "python3 run.py --check",
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            }
+        }
+    ]
+}

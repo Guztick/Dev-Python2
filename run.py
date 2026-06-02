@@ -10,6 +10,9 @@ Uso:
 import sys
 import os
 
+# Evitar que Kivy capture los argumentos de línea de comandos (ej: --check)
+os.environ.setdefault("KIVY_NO_ARGS", "1")
+
 def verificar_dependencias():
     faltantes = []
     opcionales_faltantes = []

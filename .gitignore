@@ -416,3 +416,26 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+
+# ─── DiagnosticoPro (Python / PC) ───────────────────────────────
+# Entorno virtual de Python
+venv/
+.venv/
+env/
+
+# Instaladores de drivers que el usuario coloca localmente
+# (se mantiene el README pero no los binarios)
+drivers/*
+!drivers/README.md
+
+# Cache de Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Logs de Kivy
+.kivy/
+
+# Buildozer (compilacion APK, no usado en PC)
+.buildozer/
+bin/
