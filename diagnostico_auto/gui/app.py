@@ -33,6 +33,7 @@ from gui.screens.dashboard_screen import PantallaDashboard
 from gui.screens.scan_screen import PantallaEscaneo
 from gui.screens.dtc_screen import PantallaDTCs
 from gui.screens.livedata_screen import PantallaDatosVivo
+from gui.screens.adapter_screen import PantallaAdaptador
 
 
 class PantallaPrincipal(MDScreen):
@@ -64,14 +65,17 @@ class PantallaPrincipal(MDScreen):
         self._escaneo = PantallaEscaneo(on_resultado=self._on_escaneo_resultado)
         self._dtcs = PantallaDTCs()
         self._datos = PantallaDatosVivo()
+        self._adaptador = PantallaAdaptador()
 
         # Renombrar para coincidir con la navegación interna
         self._dashboard.name = "inicio"
         self._escaneo.name = "escaneo"
         self._dtcs.name = "dtcs"
         self._datos.name = "datos"
+        self._adaptador.name = "adaptador"
 
-        for s in (self._dashboard, self._escaneo, self._dtcs, self._datos):
+        for s in (self._dashboard, self._escaneo, self._dtcs,
+                  self._datos, self._adaptador):
             self._secciones.add_widget(s)
 
         # Barra de navegación inferior
@@ -81,6 +85,7 @@ class PantallaPrincipal(MDScreen):
                 ("radar", "Escaneo", "escaneo"),
                 ("alert-circle", "DTCs", "dtcs"),
                 ("gauge", "Datos", "datos"),
+                ("usb", "Escáner", "adaptador"),
             ],
             on_cambio=self._cambiar_seccion,
         )

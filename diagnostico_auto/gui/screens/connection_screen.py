@@ -219,6 +219,22 @@ class PantallaConexion(MDScreen):
         )
         self._btn_conectar.bind(on_release=self._conectar)
 
+        # ===== Botón de buscar dispositivos (solo BT/USB) =====
+        self._btn_buscar = MDRaisedButton(
+            text="BUSCAR DISPOSITIVOS",
+            md_bg_color=Color.SUPERFICIE,
+            theme_text_color="Custom",
+            text_color=Color.PRIMARIO,
+            font_size=Fuente.SECUNDARIO,
+            line_color=Color.PRIMARIO,
+            size_hint=(1, None),
+            height=dp(44),
+            elevation=0,
+            opacity=0,
+            disabled=True,
+        )
+        self._btn_buscar.bind(on_release=self._buscar_dispositivos)
+
         # Espaciador flexible
         espaciador = MDBoxLayout()
 
@@ -228,6 +244,7 @@ class PantallaConexion(MDScreen):
         raiz.add_widget(lbl_sel)
         raiz.add_widget(grid_adapt)
         raiz.add_widget(self._campo_dir)
+        raiz.add_widget(self._btn_buscar)
         raiz.add_widget(espaciador)
         raiz.add_widget(self._tarjeta_estado)
         raiz.add_widget(self._btn_conectar)
@@ -245,17 +262,89 @@ class PantallaConexion(MDScreen):
         # Habilitar campo de dirección salvo en modo demo
         es_demo = boton.tipo == TipoAdaptador.DEMO
         self._campo_dir.disabled = es_demo
+
+        # El botón de buscar aparece para Bluetooth y USB
+        permite_busqueda = boton.tipo in (TipoAdaptador.BLUETOOTH, TipoAdaptador.USB)
+        self._btn_buscar.opacity = 1 if permite_busqueda else 0
+        self._btn_buscar.disabled = not permite_busqueda
+
         if boton.tipo == TipoAdaptador.WIFI:
             self._campo_dir.text = "192.168.0.10:35000"
             self._campo_dir.hint_text = "IP:Puerto del adaptador WiFi"
         elif boton.tipo == TipoAdaptador.BLUETOOTH:
             self._campo_dir.text = ""
-            self._campo_dir.hint_text = "Dirección MAC (00:11:22:33:44:55)"
+            self._campo_dir.hint_text = "Dirección MAC (o busca dispositivos)"
         elif boton.tipo == TipoAdaptador.USB:
             self._campo_dir.text = "/dev/ttyUSB0"
-            self._campo_dir.hint_text = "Puerto serial"
+            self._campo_dir.hint_text = "Puerto serial (o busca dispositivos)"
         else:
             self._campo_dir.text = ""
+
+    def _buscar_dispositivos(self, *_):
+        """Inicia la búsqueda de adaptadores Bluetooth/USB disponibles."""
+        self._btn_buscar.text = "BUSCANDO..."
+        self._btn_buscar.disabled = True
+        self._actualizar_estado(EstadoConexion.CONECTANDO,
+                                "Buscando dispositivos cercanos...")
+        controlador.descubrir_dispositivos(
+            on_completo=lambda disp: Clock.schedule_once(
+                lambda dt: self._mostrar_dispositivos(disp)))
+
+    def _mostrar_dispositivos(self, dispositivos):
+        self._btn_buscar.text = "BUSCAR DISPOSITIVOS"
+        self._btn_buscar.disabled = False
+
+        if not dispositivos:
+            self._actualizar_estado(EstadoConexion.ERROR,
+                                    "No se encontraron dispositivos")
+            return
+
+        self._actualizar_estado(EstadoConexion.DESCONECTADO,
+                                f"{len(dispositivos)} dispositivo(s) encontrado(s)")
+
+        # Construir lista dentro de un diálogo
+        from kivymd.uix.list import MDList, IconLeftWidget, TwoLineIconListItem
+        from kivymd.uix.dialog import MDDialog
+        from kivymd.uix.scrollview import MDScrollView
+
+        lista = MDList()
+        for disp in dispositivos:
+            icono_nombre = "bluetooth" if disp.tipo == "bluetooth" else "usb"
+            if disp.probable_obd:
+                icono_nombre = "car-connected"
+            sufijo = "  ⭐ OBD" if disp.probable_obd else ""
+            item = TwoLineIconListItem(
+                text=f"{disp.nombre}{sufijo}",
+                secondary_text=f"{disp.direccion} · {disp.descripcion}",
+                on_release=lambda x, d=disp: self._seleccionar_dispositivo(d),
+            )
+            item.add_widget(IconLeftWidget(
+                icon=icono_nombre,
+                theme_icon_color="Custom",
+                icon_color=Color.PRIMARIO if disp.probable_obd else Color.TEXTO_SUAVE))
+            lista.add_widget(item)
+
+        scroll = MDScrollView(size_hint_y=None, height=dp(320))
+        scroll.add_widget(lista)
+
+        self._dialogo_disp = MDDialog(
+            title="Dispositivos disponibles",
+            type="custom",
+            content_cls=scroll,
+            buttons=[MDFlatButton(
+                text="CERRAR", theme_text_color="Custom",
+                text_color=Color.TEXTO_SUAVE,
+                on_release=lambda x: self._dialogo_disp.dismiss())],
+        )
+        self._dialogo_disp.open()
+
+    def _seleccionar_dispositivo(self, dispositivo):
+        """Al elegir un dispositivo de la lista, llena la dirección."""
+        self._campo_dir.text = dispositivo.direccion
+        self._dialogo_disp.dismiss()
+        self._actualizar_estado(
+            EstadoConexion.DESCONECTADO,
+            f"Seleccionado: {dispositivo.nombre}")
 
     def _conectar(self, *_):
         self._btn_conectar.disabled = True

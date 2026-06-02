@@ -186,6 +186,93 @@ class Controlador:
         return self.estado == EstadoConexion.CONECTADO
 
     # ------------------------------------------------------------------
+    # Descubrimiento de dispositivos (Bluetooth / USB)
+    # ------------------------------------------------------------------
+
+    def descubrir_dispositivos(self, on_completo: Callable[[list], None]) -> None:
+        """Busca adaptadores Bluetooth y USB disponibles en un hilo."""
+        hilo = threading.Thread(
+            target=self._descubrir_worker, args=(on_completo,), daemon=True)
+        hilo.start()
+
+    def _descubrir_worker(self, on_completo) -> None:
+        if self.modo_demo:
+            time.sleep(1.5)
+            on_completo(self._dispositivos_demo())
+            return
+        try:
+            from core.hardware.discovery import Descubridor
+            descubridor = Descubridor()
+            dispositivos = descubridor.descubrir_todo()
+            on_completo(dispositivos)
+        except Exception as e:
+            logger.error(f"Error descubriendo dispositivos: {e}")
+            on_completo([])
+
+    def _dispositivos_demo(self) -> list:
+        """Dispositivos de demostración para previsualizar la UI."""
+        from core.hardware.discovery import DispositivoDescubierto
+        return [
+            DispositivoDescubierto(
+                nombre="OBDII", direccion="00:1D:A5:68:98:8B",
+                tipo="bluetooth", emparejado=True,
+                descripcion="Adaptador emparejado"),
+            DispositivoDescubierto(
+                nombre="Vgate iCar Pro", direccion="00:10:CC:4F:36:03",
+                tipo="bluetooth", emparejado=True,
+                descripcion="Adaptador emparejado"),
+            DispositivoDescubierto(
+                nombre="Audífonos JBL", direccion="A4:77:58:1C:2D:9E",
+                tipo="bluetooth", emparejado=True,
+                descripcion="Dispositivo emparejado"),
+        ]
+
+    # ------------------------------------------------------------------
+    # Detección de información del adaptador (escáner)
+    # ------------------------------------------------------------------
+
+    def detectar_adaptador(self, on_completo: Callable[[object], None]) -> None:
+        """Interroga al adaptador para obtener sus detalles técnicos."""
+        hilo = threading.Thread(
+            target=self._detectar_adaptador_worker, args=(on_completo,), daemon=True)
+        hilo.start()
+
+    def _detectar_adaptador_worker(self, on_completo) -> None:
+        if self.modo_demo:
+            time.sleep(1.2)
+            on_completo(self._info_adaptador_demo())
+            return
+        try:
+            from core.hardware.adapter_info import DetectorAdaptador
+            tipo = self.tipo_adaptador.value if self.tipo_adaptador else ""
+            detector = DetectorAdaptador(self._elm._conn, tipo_conexion=tipo)
+            info = detector.detectar()
+            on_completo(info)
+        except Exception as e:
+            logger.error(f"Error detectando adaptador: {e}")
+            on_completo(None)
+
+    def _info_adaptador_demo(self):
+        """Info de adaptador de demostración (clon ELM327 v1.5 típico)."""
+        from core.hardware.adapter_info import InfoAdaptador
+        from core.protocols import obd2  # noqa
+        from core.hardware.elm327 import PROTOCOLOS
+        info = InfoAdaptador(
+            identidad="ELM327 v1.5",
+            descripcion="OBDII to RS232 Interpreter",
+            identificador="?",
+            version_elm="1.5",
+            fabricante_chip="ELM327 compatible (clon habitual)",
+            es_genuino=False,
+            voltaje=14.2,
+            protocolo_actual="ISO 15765-4 CAN (11 bit ID, 500 kbps)",
+            tipo_conexion=self.tipo_adaptador.value if self.tipo_adaptador else "Bluetooth",
+        )
+        info.protocolos_soportados = [
+            n for c, n in PROTOCOLOS.items() if c != "0"]
+        return info
+
+    # ------------------------------------------------------------------
     # Datos de demostración (Renault Duster realista)
     # ------------------------------------------------------------------
 
